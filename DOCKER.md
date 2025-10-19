@@ -21,10 +21,11 @@ The Docker setup supports two main environments:
 ### Development Environment
 
 1. **Setup Environment Variables**:
+
    ```bash
    # Copy the development template
    cp .env.development .env
-   
+
    # Edit .env with your Neon credentials
    NEON_API_KEY=your_api_key_here
    NEON_PROJECT_ID=your_project_id_here
@@ -33,6 +34,7 @@ The Docker setup supports two main environments:
    ```
 
 2. **Start Development Environment**:
+
    ```bash
    npm run docker:dev
    ```
@@ -49,16 +51,18 @@ The Docker setup supports two main environments:
 ### Production Environment
 
 1. **Setup Environment Variables**:
+
    ```bash
    # Copy the production template
    cp .env.production .env
-   
+
    # Edit .env with your production settings
    DATABASE_URL=postgresql://username:password@your-neon-endpoint.region.aws.neon.tech/dbname?sslmode=require
    JWT_SECRET=your-super-secure-production-jwt-secret
    ```
 
 2. **Start Production Environment**:
+
    ```bash
    npm run docker:prod
    ```
@@ -110,16 +114,16 @@ CORS_ORIGIN=https://your-frontend-domain.com
 
 ## Available Docker Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run docker:dev` | Start development environment with Neon Local |
-| `npm run docker:dev:down` | Stop development environment |
-| `npm run docker:dev:logs` | View development logs |
-| `npm run docker:prod` | Start production environment |
-| `npm run docker:prod:down` | Stop production environment |
-| `npm run docker:prod:logs` | View production logs |
-| `npm run docker:build` | Build application Docker image |
-| `npm run docker:clean` | Clean up Docker system and volumes |
+| Command                    | Description                                   |
+| -------------------------- | --------------------------------------------- |
+| `npm run docker:dev`       | Start development environment with Neon Local |
+| `npm run docker:dev:down`  | Stop development environment                  |
+| `npm run docker:dev:logs`  | View development logs                         |
+| `npm run docker:prod`      | Start production environment                  |
+| `npm run docker:prod:down` | Stop production environment                   |
+| `npm run docker:prod:logs` | View production logs                          |
+| `npm run docker:build`     | Build application Docker image                |
+| `npm run docker:clean`     | Clean up Docker system and volumes            |
 
 ## How It Works
 
@@ -147,6 +151,7 @@ CORS_ORIGIN=https://your-frontend-domain.com
 ### Running Migrations
 
 **Development**:
+
 ```bash
 # Start the development environment first
 npm run docker:dev
@@ -156,6 +161,7 @@ docker exec acquisitions-app-dev npm run db:migrate
 ```
 
 **Production**:
+
 ```bash
 # Start the production environment first
 npm run docker:prod
@@ -179,24 +185,27 @@ docker exec -it acquisitions-app-dev npm run db:studio
 ### Common Issues
 
 1. **Port Already in Use**:
+
    ```bash
    # Check what's using port 3000
    netstat -ano | findstr :3000
-   
+
    # Stop existing containers
    docker stop $(docker ps -q)
    ```
 
 2. **Neon Local Connection Issues**:
+
    ```bash
    # Check Neon Local container logs
    docker logs acquisitions-neon-local
-   
+
    # Verify environment variables
    docker exec acquisitions-neon-local env | grep NEON
    ```
 
 3. **Database Connection Errors**:
+
    ```bash
    # Test database connectivity
    docker exec acquisitions-app-dev node -e "
@@ -247,11 +256,13 @@ acquisitions/
 ## Performance Optimization
 
 ### Development
+
 - Source code is mounted as volume for hot reload
 - Debug logging enabled
 - No resource limits
 
 ### Production
+
 - Multi-stage builds for smaller images
 - Non-root user for security
 - Resource limits configured
