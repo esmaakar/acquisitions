@@ -1,22 +1,20 @@
 version: '3.8'
 
 services:
-  # Application service for production
+  # Node.js application for production
   app:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
+      target: production
     container_name: acquisitions-app-prod
     ports:
-      - '3000:3000'
+      - '${PORT:-3000}:3000'
     env_file:
       - .env.production
-
     volumes:
-      # Only mount logs directory in production
+      # Mount logs directory for production logging
       - ./logs:/app/logs
-    networks:
-      - acquisitions-prod
     restart: unless-stopped
     deploy:
       resources:
@@ -27,11 +25,19 @@ services:
           memory: 256M
           cpus: '0.25'
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => { process.exit(1) })",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+    networks:
+      - acquisitions-prod
 
 networks:
   acquisitions-prod:
